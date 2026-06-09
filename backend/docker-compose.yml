@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: lupa-postgres
+    environment:
+      POSTGRES_DB: lupa
+      POSTGRES_USER: lupa
+      POSTGRES_PASSWORD: lupa
+    ports:
+      - "5432:5432"
+    volumes:
+      - lupa_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lupa -d lupa"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  lupa_pgdata:

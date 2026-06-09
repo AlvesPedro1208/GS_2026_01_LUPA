@@ -1,0 +1,59 @@
+{
+  "info": {
+    "name": "LUPA API",
+    "description": "Coleção de endpoints da API LUPA — FIAP Global Solution 2026/1 (GateMinds). Defina a variável {{baseUrl}} (padrão http://localhost:8080).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" }
+  ],
+  "item": [
+    {
+      "name": "Comunidades",
+      "item": [
+        { "name": "Listar comunidades", "request": { "method": "GET", "url": "{{baseUrl}}/api/comunidades" } },
+        { "name": "Buscar comunidade por id", "request": { "method": "GET", "url": "{{baseUrl}}/api/comunidades/1" } },
+        { "name": "Criar comunidade", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "url": "{{baseUrl}}/api/comunidades", "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Comunidade Nova Esperança\",\n  \"setor\": \"Setor_D\",\n  \"cidade\": \"São Paulo\",\n  \"latitude\": -23.62,\n  \"longitude\": -46.75,\n  \"populacaoEstimada\": 3200,\n  \"areaRisco\": true\n}" } } },
+        { "name": "Atualizar comunidade", "request": { "method": "PUT", "header": [ { "key": "Content-Type", "value": "application/json" } ], "url": "{{baseUrl}}/api/comunidades/1", "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Comunidade Jardim União\",\n  \"setor\": \"Setor_A\",\n  \"cidade\": \"São Paulo\",\n  \"latitude\": -23.6045,\n  \"longitude\": -46.722,\n  \"populacaoEstimada\": 4500,\n  \"areaRisco\": true\n}" } } },
+        { "name": "Remover comunidade", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/comunidades/3" } }
+      ]
+    },
+    {
+      "name": "Agentes",
+      "item": [
+        { "name": "Listar agentes", "request": { "method": "GET", "url": "{{baseUrl}}/api/agentes" } },
+        { "name": "Buscar agente por id", "request": { "method": "GET", "url": "{{baseUrl}}/api/agentes/1" } },
+        { "name": "Criar agente", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "url": "{{baseUrl}}/api/agentes", "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Carla Dias\",\n  \"matricula\": \"AG-1003\",\n  \"email\": \"carla.dias@prefeitura.gov.br\",\n  \"orgao\": \"Saneamento\"\n}" } } },
+        { "name": "Atualizar agente", "request": { "method": "PUT", "header": [ { "key": "Content-Type", "value": "application/json" } ], "url": "{{baseUrl}}/api/agentes/1", "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Ana Souza\",\n  \"matricula\": \"AG-1001\",\n  \"email\": \"ana.souza@prefeitura.gov.br\",\n  \"orgao\": \"Defesa Civil\"\n}" } } },
+        { "name": "Remover agente", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/agentes/2" } }
+      ]
+    },
+    {
+      "name": "Leituras (IoT)",
+      "item": [
+        { "name": "Listar leituras", "request": { "method": "GET", "url": "{{baseUrl}}/api/leituras" } },
+        { "name": "Listar leituras por comunidade", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/leituras?comunidadeId=1", "host": [ "{{baseUrl}}" ], "path": [ "api", "leituras" ], "query": [ { "key": "comunidadeId", "value": "1" } ] } } },
+        { "name": "Registrar leitura CRÍTICA (gera alerta)", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "url": "{{baseUrl}}/api/leituras", "body": { "mode": "raw", "raw": "{\n  \"comunidadeId\": 1,\n  \"temperatura\": 36.1,\n  \"umidade\": 23.5,\n  \"qualidadeAr\": 3913\n}" } } },
+        { "name": "Registrar leitura OK", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "url": "{{baseUrl}}/api/leituras", "body": { "mode": "raw", "raw": "{\n  \"comunidadeId\": 1,\n  \"temperatura\": 26.7,\n  \"umidade\": 70.0,\n  \"qualidadeAr\": 3628\n}" } } }
+      ]
+    },
+    {
+      "name": "Ocorrências",
+      "item": [
+        { "name": "Listar ocorrências", "request": { "method": "GET", "url": "{{baseUrl}}/api/ocorrencias" } },
+        { "name": "Buscar ocorrência por id", "request": { "method": "GET", "url": "{{baseUrl}}/api/ocorrencias/1" } },
+        { "name": "Criar ocorrência", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "url": "{{baseUrl}}/api/ocorrencias", "body": { "mode": "raw", "raw": "{\n  \"comunidadeId\": 1,\n  \"agenteId\": 1,\n  \"tipo\": \"FALTA_AGUA\",\n  \"descricao\": \"Sem abastecimento há 3 dias no quarteirão central.\",\n  \"latitude\": -23.6046,\n  \"longitude\": -46.7219\n}" } } },
+        { "name": "Atualizar status da ocorrência", "request": { "method": "PUT", "header": [ { "key": "Content-Type", "value": "application/json" } ], "url": "{{baseUrl}}/api/ocorrencias/1/status", "body": { "mode": "raw", "raw": "{\n  \"status\": \"RESOLVIDA\"\n}" } } },
+        { "name": "Remover ocorrência", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/ocorrencias/1" } }
+      ]
+    },
+    {
+      "name": "Alertas",
+      "item": [
+        { "name": "Listar alertas ativos", "request": { "method": "GET", "url": "{{baseUrl}}/api/alertas" } },
+        { "name": "Listar todos os alertas", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/alertas?ativos=false", "host": [ "{{baseUrl}}" ], "path": [ "api", "alertas" ], "query": [ { "key": "ativos", "value": "false" } ] } } },
+        { "name": "Resolver alerta", "request": { "method": "PUT", "url": "{{baseUrl}}/api/alertas/1/resolver" } }
+      ]
+    }
+  ]
+}
