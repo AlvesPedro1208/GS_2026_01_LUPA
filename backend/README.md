@@ -100,6 +100,21 @@ Base: `/api`
 | GET | `/api/alertas/{id}` | Busca por id |
 | PUT | `/api/alertas/{id}/resolver` | Marca como resolvido |
 
+### Autenticação — `/api/auth` (Parte 5 — Segurança)
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| POST | `/api/auth/register` | Cadastra usuário; senha salva como **hash BCrypt** (201) |
+| POST | `/api/auth/login` | Autentica e retorna o perfil; **401** se inválido |
+
+Usuário de demonstração (criado no primeiro start): `joao@prefeitura.gov.br` / `senha123`.
+
+#### Práticas de segurança aplicadas
+- **Senha com hash BCrypt** (`spring-security-crypto`) — nunca é armazenada em texto puro
+  (coluna `usuario.senha_hash` guarda `$2a$10$...`).
+- **Validação de entrada** (Bean Validation): e-mail válido, senha mínima de 6 caracteres, etc.
+- **Proteção contra SQL Injection**: acesso a dados via Spring Data JPA com *queries* parametrizadas.
+- **Não vazamento de informação**: login inválido retorna mensagem genérica ("E-mail ou senha inválidos").
+
 ## Exemplos (curl)
 
 ```bash

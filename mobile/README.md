@@ -22,8 +22,11 @@ se o servidor estiver fora do ar.
 
 | Tela | Estado da integração |
 |------|----------------------|
+| **Login / Cadastro** | ✅ **Conectada** — `POST /api/auth/login` e `/api/auth/register` (senha com **hash BCrypt** no backend), com fallback local |
 | **Registrar Ocorrência** | ✅ **Conectada** — lê comunidades reais (`GET /api/comunidades`) e envia a ocorrência (`POST /api/ocorrencias`), com fallback local |
-| Dashboard / Alertas / Relatórios / Auth | ⏳ mockados (próximos incrementos) |
+| Dashboard / Alertas / Relatórios | ⏳ mockados (próximos incrementos) |
+
+**Conta de demonstração** (existe no backend e no fallback): `joao@prefeitura.gov.br` / `senha123`.
 
 Camada de integração isolada em:
 - `src/config/apiConfig.ts` — descobre o endereço do backend automaticamente (Expo Go/simulador/emulador)

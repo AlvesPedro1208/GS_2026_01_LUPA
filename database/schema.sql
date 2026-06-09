@@ -93,3 +93,18 @@ CREATE TABLE alerta (
 
 CREATE INDEX ix_alerta_comunidade ON alerta (comunidade_id);
 CREATE INDEX ix_alerta_resolvido  ON alerta (resolvido);
+
+-- ---------------------------------------------------------------------
+-- USUARIO: autenticação (Parte 5 - Segurança). A senha é armazenada
+-- exclusivamente como hash BCrypt em senha_hash (nunca em texto puro).
+-- ---------------------------------------------------------------------
+CREATE TABLE usuario (
+    id          BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nome        VARCHAR(120) NOT NULL,
+    email       VARCHAR(150) NOT NULL,
+    senha_hash  VARCHAR(100) NOT NULL,
+    role        VARCHAR(10)  NOT NULL,
+    criado_em   TIMESTAMP    NOT NULL,
+    CONSTRAINT uk_usuario_email UNIQUE (email),
+    CONSTRAINT ck_usuario_role CHECK (role IN ('AGENTE', 'GESTOR'))
+);

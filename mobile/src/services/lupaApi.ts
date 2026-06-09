@@ -11,6 +11,22 @@
  */
 import { LUPA_API_BASE_URL, LUPA_API_TIMEOUT } from '../config/apiConfig';
 
+/** Erro HTTP com status (resposta recebida do backend). Distingue de falha de rede. */
+export class ApiHttpError extends Error {
+  constructor(public status: number, message: string) {
+    super(message);
+    this.name = 'ApiHttpError';
+  }
+}
+
+/** Usuário autenticado retornado por /api/auth/*. */
+export interface AuthUserDTO {
+  id: number;
+  nome: string;
+  email: string;
+  role: 'AGENTE' | 'GESTOR';
+}
+
 // ---------- Tipos espelhando as respostas do backend ----------
 export interface ComunidadeDTO {
   id: number;
@@ -94,7 +110,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     });
     if (!response.ok) {
       const body = await response.text().catch(() => '');
-      throw new Error(`HTTP ${response.status} em ${path}${body ? ` - ${body}` : ''}`);
+      throw new ApiHttpError(response.status, `HTTP ${response.status} em ${path}${body ? ` - ${body}` : ''}`);
     }
     const text = await response.text();
     return (text ? JSON.parse(text) : undefined) as T;
@@ -114,6 +130,18 @@ export const lupaApi = {
 
   createOcorrencia: (body: OcorrenciaRequestDTO) =>
     request<OcorrenciaDTO>('/api/ocorrencias', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+
+  register: (body: { nome: string; email: string; senha: string }) =>
+    request<AuthUserDTO>('/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+
+  login: (body: { email: string; senha: string }) =>
+    request<AuthUserDTO>('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify(body),
     }),
