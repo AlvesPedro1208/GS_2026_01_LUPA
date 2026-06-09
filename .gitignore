@@ -13,7 +13,6 @@ Thumbs.db
 # ===== Java / Maven =====
 target/
 *.class
-*.log
 
 # ===== Ambiente =====
 .env

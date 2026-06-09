@@ -1,0 +1,41 @@
+================================================================================
+CT-LUPA-ALERTA-003 — Busca por ID de alerta existente
+Data/Hora execução: 09/06/2026 20:13:47 -03
+Responsável: Leandro Cuminato
+Objeto: AlertaService.buscarPorId / GET /api/alertas/{id}
+Base URL: http://localhost:8080
+================================================================================
+
+--- Passo 1 — Verificar ambiente ---
+$ curl -s http://localhost:8080/api/alertas
+[{"id":2,"comunidadeId":3,"comunidadeNome":"Comunidade Beira-Rio","leituraId":3,"nivel":"CRITICO","mensagem":"Temperatura 36.1°C acima de 32°C: adensamento populacional | Umidade 23.5% abaixo de 30%: ausência de saneamento/água | Qualidade do ar 3913 acima de 3800: queima de lixo/poluição","resolvido":false,"criadoEm":"2026-06-09T19:37:36.043605"},{"id":1,"comunidadeId":1,"comunidadeNome":"Comunidade Jardim União","leituraId":2,"nivel":"RISCO","mensagem":"Temperatura 34.4°C acima de 32°C: adensamento populacional","resolvido":false,"criadoEm":"2026-06-09T19:27:36.043605"}]
+Resultado Passo 1: OK — PostgreSQL e API disponíveis; alertas id 1 e 2 existentes.
+
+--- Passo 2 — Executar busca GET /api/alertas/2 ---
+$ curl -s -w \nHTTP_CODE:%{http_code}\n http://localhost:8080/api/alertas/2
+{"id":2,"comunidadeId":3,"comunidadeNome":"Comunidade Beira-Rio","leituraId":3,"nivel":"CRITICO","mensagem":"Temperatura 36.1°C acima de 32°C: adensamento populacional | Umidade 23.5% abaixo de 30%: ausência de saneamento/água | Qualidade do ar 3913 acima de 3800: queima de lixo/poluição","resolvido":false,"criadoEm":"2026-06-09T19:37:36.043605"}
+HTTP_CODE:200
+
+--- Passo 3 — Validar identificação e comunidade ---
+id=2, comunidadeId=3, comunidadeNome=Comunidade Beira-Rio
+Esperado: id=2, comunidadeId=3, comunidadeNome=Comunidade Beira-Rio
+Resultado Passo 3: OK
+
+--- Passo 4 — Validar nível e status ---
+nivel=CRITICO, resolvido=False
+Esperado: nivel=CRITICO, resolvido=false
+Resultado Passo 4: OK
+
+--- Passo 5 — Validar mensagem ---
+  OK: temperatura 36.1°C
+  OK: umidade 23.5%
+  OK: qualidade do ar 3913
+Resultado Passo 5: OK
+
+--- Passo 6 — Validar metadados ---
+leituraId=3, criadoEm=2026-06-09T19:37:36.043605
+Resultado Passo 6: OK
+
+================================================================================
+RESULTADO FINAL: APROVADO
+================================================================================

@@ -1,0 +1,30 @@
+================================================================================
+CT-LUPA-ALERTA-001 — Listagem com filtro de ativos
+Data/Hora execução: 09/06/2026 20:13:47 -03
+Responsável: Leandro Cuminato
+Objeto: AlertaService.listar(true) / GET /api/alertas
+Base URL: http://localhost:8080
+================================================================================
+
+--- Passo 1 — Verificar ambiente (seed com 2 alertas ativos) ---
+$ curl -s http://localhost:8080/api/alertas
+[{"id":2,"comunidadeId":3,"comunidadeNome":"Comunidade Beira-Rio","leituraId":3,"nivel":"CRITICO","mensagem":"Temperatura 36.1°C acima de 32°C: adensamento populacional | Umidade 23.5% abaixo de 30%: ausência de saneamento/água | Qualidade do ar 3913 acima de 3800: queima de lixo/poluição","resolvido":false,"criadoEm":"2026-06-09T19:37:36.043605"},{"id":1,"comunidadeId":1,"comunidadeNome":"Comunidade Jardim União","leituraId":2,"nivel":"RISCO","mensagem":"Temperatura 34.4°C acima de 32°C: adensamento populacional","resolvido":false,"criadoEm":"2026-06-09T19:27:36.043605"}]
+Resultado Passo 1: OK
+
+--- Passo 2 — Executar listagem GET /api/alertas ---
+$ curl -s -w \nHTTP_CODE:%{http_code}\n http://localhost:8080/api/alertas
+[{"id":2,"comunidadeId":3,"comunidadeNome":"Comunidade Beira-Rio","leituraId":3,"nivel":"CRITICO","mensagem":"Temperatura 36.1°C acima de 32°C: adensamento populacional | Umidade 23.5% abaixo de 30%: ausência de saneamento/água | Qualidade do ar 3913 acima de 3800: queima de lixo/poluição","resolvido":false,"criadoEm":"2026-06-09T19:37:36.043605"},{"id":1,"comunidadeId":1,"comunidadeNome":"Comunidade Jardim União","leituraId":2,"nivel":"RISCO","mensagem":"Temperatura 34.4°C acima de 32°C: adensamento populacional","resolvido":false,"criadoEm":"2026-06-09T19:27:36.043605"}]
+HTTP_CODE:200
+
+--- Passo 3 — Validar primeiro elemento ---
+id=2, nivel=CRITICO, comunidadeNome=Comunidade Beira-Rio, resolvido=False
+Resultado Passo 3: OK
+
+--- Passo 4 — Validar segundo elemento ---
+id=1, nivel=RISCO, comunidadeNome=Comunidade Jardim União, resolvido=False
+Tamanho da lista: 2
+Resultado Passo 4: OK
+
+================================================================================
+RESULTADO FINAL: APROVADO
+================================================================================

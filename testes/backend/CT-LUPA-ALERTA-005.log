@@ -1,0 +1,51 @@
+================================================================================
+CT-LUPA-ALERTA-005 — Resolver alerta e persistir estado
+Data/Hora execução: 09/06/2026 20:16:10 -03
+Responsável: Leandro Cuminato
+Objeto: AlertaService.resolver / PUT /api/alertas/{id}/resolver
+Base URL: http://localhost:8080
+================================================================================
+
+--- Passo 1 — Verificar ambiente ---
+Resultado Passo 1: OK — alerta id 1 com resolvido=false.
+
+--- Passo 2 — Estado pré-resolução GET /api/alertas/1 ---
+$ curl -s -w \nHTTP_CODE:%{http_code}\n http://localhost:8080/api/alertas/1
+{"id":1,"comunidadeId":1,"comunidadeNome":"Comunidade Jardim União","leituraId":2,"nivel":"RISCO","mensagem":"Temperatura 34.4°C acima de 32°C: adensamento populacional","resolvido":false,"criadoEm":"2026-06-09T20:00:57.126732"}
+HTTP_CODE:200
+
+--- Passo 3 — Executar resolução PUT /api/alertas/1/resolver ---
+$ curl -s -w "\nHTTP_CODE:%{http_code}" -X PUT http://localhost:8080/api/alertas/1/resolver
+{"id":1,"comunidadeId":1,"comunidadeNome":"Comunidade Jardim União","leituraId":2,"nivel":"RISCO","mensagem":"Temperatura 34.4°C acima de 32°C: adensamento populacional","resolvido":true,"criadoEm":"2026-06-09T20:00:57.126732"}
+HTTP_CODE:200
+
+--- Passo 4 — Validar resposta da resolução ---
+{
+  "id": 1,
+  "comunidadeId": 1,
+  "comunidadeNome": "Comunidade Jardim União",
+  "leituraId": 2,
+  "nivel": "RISCO",
+  "mensagem": "Temperatura 34.4°C acima de 32°C: adensamento populacional",
+  "resolvido": true,
+  "criadoEm": "2026-06-09T20:00:57.126732"
+}
+Resultado Passo 4: OK
+
+--- Passo 5 — Confirmar persistência GET /api/alertas/1 ---
+$ curl -s -w \nHTTP_CODE:%{http_code}\n http://localhost:8080/api/alertas/1
+{"id":1,"comunidadeId":1,"comunidadeNome":"Comunidade Jardim União","leituraId":2,"nivel":"RISCO","mensagem":"Temperatura 34.4°C acima de 32°C: adensamento populacional","resolvido":true,"criadoEm":"2026-06-09T20:00:57.126732"}
+HTTP_CODE:200
+
+--- Passo 6 — Listagem de ativos GET /api/alertas ---
+$ curl -s -w \nHTTP_CODE:%{http_code}\n http://localhost:8080/api/alertas
+[{"id":2,"comunidadeId":3,"comunidadeNome":"Comunidade Beira-Rio","leituraId":3,"nivel":"CRITICO","mensagem":"Temperatura 36.1°C acima de 32°C: adensamento populacional | Umidade 23.5% abaixo de 30%: ausência de saneamento/água | Qualidade do ar 3913 acima de 3800: queima de lixo/poluição","resolvido":false,"criadoEm":"2026-06-09T20:10:57.126732"}]
+HTTP_CODE:200
+
+--- Validação Passo 6 ---
+Ids na listagem de ativos: [2]
+Resultado Passo 6: OK
+
+================================================================================
+RESULTADO FINAL: APROVADO
+================================================================================

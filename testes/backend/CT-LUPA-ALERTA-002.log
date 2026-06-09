@@ -1,0 +1,42 @@
+================================================================================
+CT-LUPA-ALERTA-002 — Listagem sem filtro de ativos (inclui resolvidos)
+Data/Hora execução: 09/06/2026 20:13:47 -03
+Responsável: Leandro Cuminato
+Objeto: AlertaService.listar(false) / GET /api/alertas?ativos=false
+Base URL: http://localhost:8080
+================================================================================
+
+--- Passo 1 — Verificar ambiente ---
+Resultado Passo 1: OK — seed com 2 alertas ativos (resolvido=false).
+
+--- Passo 2 — Verificar estado inicial GET /api/alertas/1 ---
+$ curl -s -w \nHTTP_CODE:%{http_code}\n http://localhost:8080/api/alertas/1
+{"id":1,"comunidadeId":1,"comunidadeNome":"Comunidade Jardim União","leituraId":2,"nivel":"RISCO","mensagem":"Temperatura 34.4°C acima de 32°C: adensamento populacional","resolvido":false,"criadoEm":"2026-06-09T19:27:36.043605"}
+HTTP_CODE:200
+
+--- Passo 3 — Resolver alerta 1 PUT /api/alertas/1/resolver ---
+$ curl -s -w \nHTTP_CODE:%{http_code}\n -X PUT http://localhost:8080/api/alertas/1/resolver
+{"id":1,"comunidadeId":1,"comunidadeNome":"Comunidade Jardim União","leituraId":2,"nivel":"RISCO","mensagem":"Temperatura 34.4°C acima de 32°C: adensamento populacional","resolvido":true,"criadoEm":"2026-06-09T19:27:36.043605"}
+HTTP_CODE:200
+
+--- Passo 4 — Listar apenas ativos GET /api/alertas ---
+$ curl -s -w \nHTTP_CODE:%{http_code}\n http://localhost:8080/api/alertas
+[{"id":2,"comunidadeId":3,"comunidadeNome":"Comunidade Beira-Rio","leituraId":3,"nivel":"CRITICO","mensagem":"Temperatura 36.1°C acima de 32°C: adensamento populacional | Umidade 23.5% abaixo de 30%: ausência de saneamento/água | Qualidade do ar 3913 acima de 3800: queima de lixo/poluição","resolvido":false,"criadoEm":"2026-06-09T19:37:36.043605"}]
+HTTP_CODE:200
+
+--- Validação Passo 4 ---
+Tamanho=1, ids=[2] — OK (esperado: 1 elemento, id=2)
+
+--- Passo 5 — Listar todos GET /api/alertas?ativos=false ---
+$ curl -s -w \nHTTP_CODE:%{http_code}\n http://localhost:8080/api/alertas?ativos=false
+[{"id":2,"comunidadeId":3,"comunidadeNome":"Comunidade Beira-Rio","leituraId":3,"nivel":"CRITICO","mensagem":"Temperatura 36.1°C acima de 32°C: adensamento populacional | Umidade 23.5% abaixo de 30%: ausência de saneamento/água | Qualidade do ar 3913 acima de 3800: queima de lixo/poluição","resolvido":false,"criadoEm":"2026-06-09T19:37:36.043605"},{"id":1,"comunidadeId":1,"comunidadeNome":"Comunidade Jardim União","leituraId":2,"nivel":"RISCO","mensagem":"Temperatura 34.4°C acima de 32°C: adensamento populacional","resolvido":true,"criadoEm":"2026-06-09T19:27:36.043605"}]
+HTTP_CODE:200
+
+--- Passo 6 — Validar conteúdo da lista completa ---
+  id=2, resolvido=False
+  id=1, resolvido=True
+Resultado Passo 6: OK
+
+================================================================================
+RESULTADO FINAL: APROVADO
+================================================================================

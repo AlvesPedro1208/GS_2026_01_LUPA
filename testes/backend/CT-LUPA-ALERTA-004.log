@@ -1,0 +1,28 @@
+================================================================================
+CT-LUPA-ALERTA-004 — Busca por ID inexistente (HTTP 404)
+Data/Hora execução: 09/06/2026 20:13:47 -03
+Responsável: Leandro Cuminato
+Objeto: AlertaService.buscarPorId / GET /api/alertas/{id}
+Base URL: http://localhost:8080
+================================================================================
+
+--- Passo 1 — Verificar ambiente ---
+Resultado Passo 1: OK — API disponível; alerta id 999 não existe.
+
+--- Passo 2 — Executar busca inválida GET /api/alertas/999 ---
+$ curl -s -w \nHTTP_CODE:%{http_code}\n http://localhost:8080/api/alertas/999
+{"timestamp":"2026-06-09T20:13:47.847212","status":404,"error":"Not Found","message":"Alerta não encontrado(a) para o id 999","path":"/api/alertas/999","details":[]}
+HTTP_CODE:404
+
+--- Passos 3–5 — Validar ApiError ---
+  OK: status=404
+  OK: error=Not Found
+  OK: message de negócio
+  OK: path=/api/alertas/999
+  OK: details=[]
+  OK: timestamp presente
+Resultado Passos 3–5: OK
+
+================================================================================
+RESULTADO FINAL: APROVADO
+================================================================================
