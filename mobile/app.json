@@ -1,0 +1,55 @@
+{
+  "expo": {
+    "name": "LUPA",
+    "slug": "lupa",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.lupa.app",
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "SUA_CHAVE_GOOGLE_MAPS_AQUI"
+        }
+      }
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "LUPA precisa de acesso à câmera para registrar ocorrências."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "LUPA precisa de acesso à localização para registrar a posição das ocorrências."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "LUPA precisa de acesso à galeria para selecionar fotos de ocorrências."
+        }
+      ],
+      "expo-font"
+    ]
+  }
+}
