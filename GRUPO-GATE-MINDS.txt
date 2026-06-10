@@ -1,0 +1,14 @@
+LUPA — Leitura Urbana e Planejamento de Assentamentos
+
+As instruções sobre como rodar o projeto está no arquivo README.md dentro do diretório principal
+
+Time: 
+Leandro de Lima Cuminato | RM556035
+Pedro Henrique Alves do Espirito Santo | RM558897
+Giovanna Mendonça Federico | RM564626
+Nathan Craveiro Gonçalves Amin | RM555508
+Gabriel Matias Simões | RM556171
+ 
+Video pitch:
+LINK
+
